@@ -9,10 +9,11 @@ import com.java.spring.movie_management.model.EmployeeDTO;
 import com.java.spring.movie_management.repository.EmployeeRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Service
 @RequiredArgsConstructor
-
+@Service
+@Slf4j
 public class EmployeeService {
     private final EmployeeMapper mapper;
     @Autowired
@@ -27,7 +28,10 @@ public class EmployeeService {
 
     @Async
     public void sendWelcomeEmail(String to) {
-        // simulate long task
+        log.debug("Sending email to: {}", to);
+        //a very long process here
+        //...
+        log.info("Finish the function sendWelcomeEmail");
         System.out.println("Email sent to " + to);
     }
 
