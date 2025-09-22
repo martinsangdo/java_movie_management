@@ -22,6 +22,7 @@ public class Home {
     }
 
     @PostMapping("/welcome")
+    @ResponseBody
     public ResponseEntity<String> sendWelcome(@RequestParam String email) {
         employeeService.sendWelcomeEmail(email);  // async
         return ResponseEntity.accepted().body("Email is being processed");
