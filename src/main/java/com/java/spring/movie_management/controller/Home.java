@@ -27,4 +27,10 @@ public class Home {
         employeeService.sendWelcomeEmail(email);  // async
         return ResponseEntity.accepted().body("Email is being processed");
     }
+
+    @GetMapping("/api/message")
+    @ResponseBody
+    public String showMessage(){
+        return "This is a message from server!";
+    }
 }
