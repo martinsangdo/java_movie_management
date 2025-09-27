@@ -1,16 +1,19 @@
 package com.java.spring.movie_management.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MovieController {
@@ -42,4 +45,12 @@ public class MovieController {
         }
         return new ResponseEntity<>("Hi! My name is: " + myName, HttpStatus.OK);
     }
+
+    @GetMapping("/booking_info")
+    public ResponseEntity<String> getBookingInfo(HttpServletRequest request) {
+        Claims claims = (Claims) request.getAttribute("claims");
+        String userId = claims.get("user_id", String.class);
+        return new ResponseEntity<>("Booking for user ID: " + userId, HttpStatus.OK);
+    }
+
 }
