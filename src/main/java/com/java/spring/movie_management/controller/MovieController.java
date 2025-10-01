@@ -1,11 +1,16 @@
 package com.java.spring.movie_management.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.java.spring.movie_management.model.Movie;
+import com.java.spring.movie_management.service.MovieService;
 
 import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +22,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MovieController {
+    @Autowired
+    MovieService movieService;
     
     @Operation(
         summary = "Đây là tóm tắt chức năng của API này",
@@ -53,4 +60,10 @@ public class MovieController {
         return new ResponseEntity<>("Booking for user ID: " + userId, HttpStatus.OK);
     }
 
+    @GetMapping("/api/public/movies")
+    public ResponseEntity<List<Movie>> getAllMovies(){
+        List<Movie> allMovies = movieService.findAll();
+        //
+        return new ResponseEntity<>(allMovies, HttpStatus.OK);
+    }
 }
