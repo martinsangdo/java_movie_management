@@ -11,6 +11,5 @@ import com.java.spring.movie_management.model.Movie;
 
 @Repository
 public interface MovieRepository extends MongoRepository<Movie, String> {
-    // Page<Movie> findAll(Pageable pageable);
     List<Movie> findAll();
 }

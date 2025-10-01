@@ -3,6 +3,8 @@ package com.java.spring.movie_management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -60,10 +62,9 @@ public class MovieController {
         return new ResponseEntity<>("Booking for user ID: " + userId, HttpStatus.OK);
     }
 
-    @GetMapping("/api/public/movies")
-    public ResponseEntity<List<Movie>> getAllMovies(){
-        List<Movie> allMovies = movieService.findAll();
-        //
+    @GetMapping("/api/public/top-movies")
+    public ResponseEntity<Page<Movie>> getTop10Movies(){
+        Page<Movie> allMovies = movieService.findAllPagination(PageRequest.of(0, 10));
         return new ResponseEntity<>(allMovies, HttpStatus.OK);
     }
 }
