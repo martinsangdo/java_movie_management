@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Call Backend GET Demo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; color: #222; }
+    .card { max-width: 700px; margin: 0 auto; padding: 24px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+    label { display:block; margin-top:12px; font-weight:600; }
+    input[type="text"] { width:100%; padding:8px 12px; margin-top:6px; box-sizing:border-box; }
+    select, button { padding:8px 12px; margin-top:12px; }
+    pre { background:#f6f8fa; padding:12px; border-radius:6px; overflow:auto; }
+    .hint { color:#666; font-size:0.9em; margin-top:8px; }
+    .error { color:#b00020; font-weight:600; }
+  </style>
+</head>
+<body>
+  
+  <script>
+    async function fetchData(url) {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return await response.json(); // parse JSON
+      } catch (error) {
+        console.error("Fetch failed:", error);
+        return null; // return null so caller can handle error
+      }
+    }
+    //get data
+    (async function loadMovies() {
+      const MOVIE_API = 'http://localhost:8080/api/public/top-movies';
+      const movies = await fetchData(MOVIE_API);
+      if (!movies) {
+        movieListEl.innerHTML = "<li>Failed to load movies.</li>";
+        return;
+      }
+      console.log(movies.content);
+    })();
+      
+  </script>
+</body>
+</html>
+<!-- cp movies.html /usr/local/Cellar/nginx/1.29.1/html -->

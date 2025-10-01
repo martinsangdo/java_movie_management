@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -62,6 +63,7 @@ public class MovieController {
         return new ResponseEntity<>("Booking for user ID: " + userId, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:8088")
     @GetMapping("/api/public/top-movies")
     public ResponseEntity<Page<Movie>> getTop10Movies(){
         Page<Movie> allMovies = movieService.findAllPagination(PageRequest.of(0, 10));
