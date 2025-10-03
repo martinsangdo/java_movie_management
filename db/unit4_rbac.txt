@@ -1,0 +1,51 @@
+db.user.insertMany([
+  {
+    user_id: "U001",
+    username: "admin",
+    password_hash: "hashed_admin123"
+  },
+  {
+    user_id: "U002",
+    username: "alice",
+    password_hash: "hashed_user123"
+  }
+]);
+
+db.role.insertMany([
+  { role_id: "R001", role_name: "ADMIN" },
+  { role_id: "R002", role_name: "USER" }
+]);
+
+db.permission.insertMany([
+  { permission_id: "P001", action: "READ" },
+  { permission_id: "P002", action: "WRITE" },
+  { permission_id: "P003", action: "DELETE" }
+]);
+
+db.resource.insertMany([
+  { resource_id: "RES001", resource_name: "PROFILE" },
+  { resource_id: "RES002", resource_name: "ADMIN_PANEL" },
+  { resource_id: "RES003", resource_name: "REPORTS" }
+]);
+
+db.user_role.insertMany([
+  { user_id: "U001", role_id: "R001" }, // admin → ADMIN
+  { user_id: "U002", role_id: "R002" }  // alice → USER
+]);
+
+db.role_permission.insertMany([
+  { role_permission_id: "RP001", role_id: "R001", permission_id: "P001" }, // ADMIN → READ
+  { role_permission_id: "RP002", role_id: "R001", permission_id: "P002" }, // ADMIN → WRITE
+  { role_permission_id: "RP003", role_id: "R002", permission_id: "P001" }  // USER → READ
+]);
+
+db.role_permission_resource.insertMany([
+  { role_permission_id: "RP001", resource_id: "RES001" }, // ADMIN READ → PROFILE
+  { role_permission_id: "RP001", resource_id: "RES002" }, // ADMIN READ → ADMIN_PANEL
+  { role_permission_id: "RP001", resource_id: "RES003" }, // ADMIN READ → REPORTS
+
+  { role_permission_id: "RP002", resource_id: "RES001" }, // ADMIN WRITE → PROFILE
+  { role_permission_id: "RP002", resource_id: "RES002" }, // ADMIN WRITE → ADMIN_PANEL
+
+  { role_permission_id: "RP003", resource_id: "RES001" }  // USER READ → PROFILE
+]);
