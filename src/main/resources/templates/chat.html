@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 8px 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            line-height: 1.4;
+            max-width: 80%;
+        }
+        .user {
+            background: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .bot {
+            background: #e9ecef;
+            color: black;
+            align-self: flex-start;
+        }
+        .input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+        .input-area button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .input-area button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div id="chatBox" class="chat-box"></div>
+
+    <div class="input-area">
+        <input id="userInput" type="text" placeholder="Ask something..." />
+        <button id="sendBtn">Send</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById("chatBox");
+    const input = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function addMessage(text, sender) {
+        const msg = document.createElement("div");
+        msg.classList.add("message", sender);
+        msg.textContent = text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const question = input.value.trim();
+        if (!question) return;
+        addMessage(question, "user");
+        input.value = "";
+        try {
+            const response = await fetch("/api/public/chat?question=" + question, {
+                method: "POST"
+            });
+            const reply = await response.text();
+            addMessage(reply, "bot");
+        } catch (error) {
+            addMessage("⚠️ Error contacting AI server.", "bot");
+        }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage();
+    });
+</script>
+</body>
+</html>

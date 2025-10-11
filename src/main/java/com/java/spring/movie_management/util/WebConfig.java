@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor())
                 .addPathPatterns("/**") // all endpoints
-                .excludePathPatterns(Arrays.asList("/auth/**", "/api/public/**")); // skip auth endpoints
+                .excludePathPatterns(Arrays.asList("/auth/**", "/api/public/**", "/ui/**")); // skip auth endpoints
     }
 }

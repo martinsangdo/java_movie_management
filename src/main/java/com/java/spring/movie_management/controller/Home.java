@@ -2,6 +2,7 @@ package com.java.spring.movie_management.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.java.spring.movie_management.service.ChatService;
 import com.java.spring.movie_management.service.EmployeeService;
@@ -25,6 +27,8 @@ public class Home {
     ExternalApiService externalApiService;
     @Autowired
     ChatService chatService;
+    @Autowired
+    private SpringTemplateEngine templateEngine; // Inject Thymeleaf's template engine
 
     @GetMapping("/")
     @ResponseBody
@@ -61,8 +65,16 @@ public class Home {
 
     @PostMapping("/api/public/chat")
     @ResponseBody
-    public ResponseEntity<String> askAIChat(@RequestParam String query) {
-        String output = chatService.sendRequest2Gemini(query);
-        return new ResponseEntity<>(output, HttpStatus.OK);
+    public ResponseEntity<String> askAIChat(@RequestParam String question) {
+        if (Objects.nonNull(question)){
+            String output = chatService.sendRequest2Gemini(question);
+            return new ResponseEntity<>(output, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Empty query", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/ui/chat")
+    public String chatPage() {
+        return "chat";
     }
 }
