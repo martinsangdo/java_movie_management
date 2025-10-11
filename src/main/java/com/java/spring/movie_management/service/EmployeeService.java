@@ -1,5 +1,7 @@
 package com.java.spring.movie_management.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -9,15 +11,16 @@ import com.java.spring.movie_management.model.EmployeeDTO;
 import com.java.spring.movie_management.repository.EmployeeRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class EmployeeService {
-    private final EmployeeMapper mapper;
+    @Autowired
+    private EmployeeMapper mapper;
     @Autowired
     EmployeeRepository employeeRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
 
     public EmployeeDTO getEmployeeById(Long id) {
         // Employee entity = mapper.toEntity(dto);   // Convert DTO → Entity
