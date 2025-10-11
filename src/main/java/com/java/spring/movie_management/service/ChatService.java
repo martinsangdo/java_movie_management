@@ -18,22 +18,26 @@ public class ChatService {
     @Autowired
     private Environment env;
     final String GEMINI_API_URI = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=";
-
+    //
+    JsonNode buildGeminiRequestFormat(String query) throws Exception{
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode textNode = mapper.createObjectNode();
+        textNode.put("text", query);
+        ArrayNode partsArray = mapper.createArrayNode();
+        partsArray.add(textNode);
+        ObjectNode contentsNode = mapper.createObjectNode();
+        contentsNode.set("parts", partsArray);
+        ObjectNode root = mapper.createObjectNode();
+        root.set("contents", contentsNode);
+        String jsonBody = mapper.writeValueAsString(root);
+        String data = externalApiService.sendPostRequest(GEMINI_API_URI + env.getProperty("gemini_api_key"), jsonBody);
+        JsonNode jsonData = mapper.readTree(data);
+        return jsonData;
+    }
+    //
     public String sendRequest2Gemini(String query){
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode textNode = mapper.createObjectNode();
-            textNode.put("text", query);
-            ArrayNode partsArray = mapper.createArrayNode();
-            partsArray.add(textNode);
-            ObjectNode contentsNode = mapper.createObjectNode();
-            contentsNode.set("parts", partsArray);
-            ObjectNode root = mapper.createObjectNode();
-            root.set("contents", contentsNode);
-            String jsonBody = mapper.writeValueAsString(root);
-            String data = externalApiService.sendPostRequest(GEMINI_API_URI + env.getProperty("gemini_api_key"), jsonBody);
-            JsonNode jsonData = mapper.readTree(data);
-            System.out.println(data.toString());
+            JsonNode jsonData = buildGeminiRequestFormat(query);
             // Path: candidates[0].content.parts[0].text
             String text = jsonData.path("candidates")
                           .get(0)

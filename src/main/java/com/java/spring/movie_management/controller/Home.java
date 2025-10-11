@@ -62,7 +62,7 @@ public class Home {
         res.put("token", token);
         return res;
     }
-
+    //
     @PostMapping("/api/public/chat")
     @ResponseBody
     public ResponseEntity<String> askAIChat(@RequestParam String question) {
@@ -72,7 +72,7 @@ public class Home {
         }
         return new ResponseEntity<>("Empty query", HttpStatus.BAD_REQUEST);
     }
-
+    //
     @GetMapping("/ui/chat")
     public String chatPage() {
         return "chat";

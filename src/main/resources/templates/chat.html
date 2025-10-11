@@ -93,6 +93,11 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage();
+    });
+
     async function sendMessage() {
         const question = input.value.trim();
         if (!question) return;
@@ -105,14 +110,11 @@
             const reply = await response.text();
             addMessage(reply, "bot");
         } catch (error) {
-            addMessage("⚠️ Error contacting AI server.", "bot");
+            addMessage("Error contacting AI server.", "bot");
         }
     }
 
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keypress", e => {
-        if (e.key === "Enter") sendMessage();
-    });
+    
 </script>
 </body>
 </html>
