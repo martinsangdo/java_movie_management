@@ -9,7 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Document(collection = "mymoviedb")    //collection name
+// @Document(collection = "mymoviedb")    //collection name
+@Document(collection = "movies")    //collection name
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
