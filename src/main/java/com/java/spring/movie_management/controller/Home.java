@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +12,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.java.spring.movie_management.service.ChatService;
 import com.java.spring.movie_management.service.EmployeeService;
+import com.java.spring.movie_management.service.ExternalApiService;
 import com.java.spring.movie_management.util.JwtUtil;
 
 @Controller
 public class Home {
     @Autowired
     EmployeeService employeeService;
+    @Autowired
+    ExternalApiService externalApiService;
+    @Autowired
+    ChatService chatService;
 
     @GetMapping("/")
     @ResponseBody
@@ -50,5 +57,12 @@ public class Home {
         Map<String, String> res = new HashMap<>();
         res.put("token", token);
         return res;
+    }
+
+    @PostMapping("/api/public/chat")
+    @ResponseBody
+    public ResponseEntity<String> askAIChat(@RequestParam String query) {
+        String output = chatService.sendRequest2Gemini(query);
+        return new ResponseEntity<>(output, HttpStatus.OK);
     }
 }
