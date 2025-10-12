@@ -1,5 +1,7 @@
 package com.java.spring.movie_management.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java.spring.movie_management.model.Movie;
 import com.java.spring.movie_management.service.MovieService;
@@ -65,6 +68,16 @@ public class MovieController {
     @GetMapping("/api/public/top-movies")
     public ResponseEntity<Page<Movie>> getTop10Movies(){
         Page<Movie> allMovies = movieService.findAllPagination(PageRequest.of(0, 10));
+        return new ResponseEntity<>(allMovies, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/public/movies")
+    @ResponseBody
+    public ResponseEntity<List<Movie>> getAllMovies(){
+        List<Movie> allMovies = movieService.findAll();
+        for (Movie movie: allMovies){
+            System.out.println(movie.getTitle());
+        }
         return new ResponseEntity<>(allMovies, HttpStatus.OK);
     }
 }

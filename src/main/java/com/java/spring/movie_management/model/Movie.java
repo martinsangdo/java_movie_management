@@ -36,9 +36,9 @@ public class Movie {
     private String director;
     private Double rating;
 
-    public Movie(Double vote){
-        this.voteAverage = vote;
-    }
+    // public Movie(Double vote){
+    //     this.voteAverage = vote;
+    // }
 
     public boolean isHighlyRated() {
         return this.voteAverage >= 8.0;
