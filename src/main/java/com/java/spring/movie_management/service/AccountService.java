@@ -27,4 +27,9 @@ public class AccountService {
         }
         return list;
     }
+
+    public AccountDTO getDetail(String accountId){
+        Account savedAccount = accountRepository.findByAccountId(accountId);
+        return mapper.toDto(savedAccount);
+    }
 }

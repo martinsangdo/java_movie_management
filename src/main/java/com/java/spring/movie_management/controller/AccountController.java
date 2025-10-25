@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java.spring.movie_management.model.AccountDTO;
@@ -22,5 +23,12 @@ public class AccountController {
     public ResponseEntity<List<AccountDTO>> getAllAccounts(){
         List<AccountDTO> allData = accountService.findAll();
         return new ResponseEntity<>(allData, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/public/accounts/{id}")
+    @ResponseBody
+    public ResponseEntity<AccountDTO> getAccountDetail(@PathVariable String id){
+        AccountDTO detail = accountService.getDetail(id);
+        return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 }
