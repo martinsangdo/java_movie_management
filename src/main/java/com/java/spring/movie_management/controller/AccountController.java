@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.java.spring.movie_management.model.AccountDTO;
 import com.java.spring.movie_management.service.AccountService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @Controller
 public class AccountController {
     @Autowired
@@ -20,6 +22,7 @@ public class AccountController {
 
     @GetMapping("/api/public/accounts")
     @ResponseBody
+    @Operation(summary = "Get all accounts", description = "Fetches all account records with limited fields (name, email, accountId).")
     public ResponseEntity<List<AccountDTO>> getAllAccounts(){
         List<AccountDTO> allData = accountService.findAll();
         return new ResponseEntity<>(allData, HttpStatus.OK);
