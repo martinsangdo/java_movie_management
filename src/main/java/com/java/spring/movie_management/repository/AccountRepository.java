@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.java.spring.movie_management.model.Movie;
+import com.java.spring.movie_management.model.Account;
 
 @Repository
-public interface MovieRepository extends MongoRepository<Movie, String> {
-    List<Movie> findAll();
+public interface AccountRepository extends MongoRepository<Account, String> {
+    List<Account> findAll();
 }

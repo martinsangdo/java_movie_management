@@ -1,0 +1,47 @@
+db.account.insertMany([
+  {
+    account_id: "A1001",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "+1-202-555-0123",
+    password: "hashed_password_123",
+    credit_score: 720,
+    reference_code: "REF1234"
+  },
+  {
+    account_id: "A1002",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    phone: "+1-202-555-0456",
+    password: "hashed_password_456",
+    credit_score: 680,
+    reference_code: "REF5678"
+  },
+  {
+    account_id: "A1003",
+    name: "Michael Lee",
+    email: "michael.lee@example.com",
+    phone: "+1-202-555-0789",
+    password: "hashed_password_789",
+    credit_score: 750,
+    reference_code: "REF9012"
+  },
+  {
+    account_id: "A1004",
+    name: "Sarah Nguyen",
+    email: "sarah.nguyen@example.com",
+    phone: "+84-912-555-123",
+    password: "hashed_password_abc",
+    credit_score: 695,
+    reference_code: "REF3456"
+  },
+  {
+    account_id: "A1005",
+    name: "David Kim",
+    email: "david.kim@example.com",
+    phone: "+1-202-555-0999",
+    password: "hashed_password_xyz",
+    credit_score: 770,
+    reference_code: "REF7890"
+  }
+]);
