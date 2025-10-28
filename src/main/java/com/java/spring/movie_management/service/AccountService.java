@@ -2,6 +2,7 @@ package com.java.spring.movie_management.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,23 @@ public class AccountService {
     public AccountDTO getDetail(String accountId){
         Account savedAccount = accountRepository.findByAccountId(accountId);
         return mapper.toDto(savedAccount);
+    }
+
+    public AccountDTO createAccount(Account dto) {
+        // Check for existing email
+        Optional<Account> existing = accountRepository.findByEmail(dto.getEmail());
+        if (existing.isPresent()) {
+            throw new IllegalArgumentException("Email is already registered.");
+        }
+
+        Account account = new Account();
+        account.setAccountId("A" + System.currentTimeMillis());
+        account.setName(dto.getName());
+        account.setEmail(dto.getEmail());
+        account.setPhone(dto.getPhone());
+        account.setPassword(dto.getPassword()); // TODO: hash before saving
+        accountRepository.save(account);
+        AccountDTO accountDTO = mapper.toDto(account);
+        return accountDTO;
     }
 }
