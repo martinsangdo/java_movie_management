@@ -1,0 +1,3 @@
+for the Excercise 7
+docker tag k45q4ckc/movies-api dtsangt3h/java_m4_t3h_sang_1:k45q4ckc_moviquest_api
+docker push dtsangt3h/java_m4_t3h_sang_1:k45q4ckc_moviquest_api

@@ -1,0 +1,18 @@
+db.legal_knowledge.insertMany([
+  {
+    topic: "immigration",
+    knowledge: "Immigration law governs the process of entering, staying, and working in a country legally. Foreign nationals typically need a valid visa or residence permit to stay for extended periods. Overstaying or working without authorization can result in fines, deportation, or future entry bans."
+  },
+  {
+    topic: "labour",
+    knowledge: "Employees are generally entitled to paid annual leave, sick leave, and public holidays. Termination of employment must follow legal procedures, often requiring notice periods or severance pay depending on the reason for dismissal."
+  },
+  {
+    topic: "family",
+    knowledge: "Family law addresses issues such as marriage, divorce, child custody, and inheritance. Legal marriage requires consent, legal age, and sometimes registration before an authorized officer or court."
+  }
+  {
+    topic: "bankruptcy",
+    knowledge: "Once a bankruptcy petition is filed, creditors must stop collection actions. The debtor may be required to disclose all assets and liabilities, and certain debts such as taxes or child support are typically not dischargeable."
+  }
+]);
