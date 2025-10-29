@@ -104,7 +104,8 @@
         addMessage(question, "user");
         input.value = "";
         try {
-            const response = await fetch("/api/public/chat?question=" + question, {
+            //for normal chat: use this endpoint "/api/public/chat"
+            const response = await fetch("/api/public/chat-cot?question=" + question, {
                 method: "POST"
             });
             const reply = await response.text();

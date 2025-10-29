@@ -17,6 +17,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import com.java.spring.movie_management.service.ChatService;
 import com.java.spring.movie_management.service.EmployeeService;
 import com.java.spring.movie_management.service.ExternalApiService;
+import com.java.spring.movie_management.service.LegalKnowledgeService;
 import com.java.spring.movie_management.util.JwtUtil;
 
 @Controller
@@ -29,6 +30,8 @@ public class Home {
     ChatService chatService;
     @Autowired
     private SpringTemplateEngine templateEngine; // Inject Thymeleaf's template engine
+    @Autowired
+    private LegalKnowledgeService legalKnowledgeService;
 
     @GetMapping("/")
     @ResponseBody
@@ -62,12 +65,62 @@ public class Home {
         res.put("token", token);
         return res;
     }
-    //
+    //get & response chat results
     @PostMapping("/api/public/chat")
     @ResponseBody
     public ResponseEntity<String> askAIChat(@RequestParam String question) {
         if (Objects.nonNull(question)){
             String output = chatService.sendRequest2Gemini(question);
+            return new ResponseEntity<>(output, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Empty query", HttpStatus.BAD_REQUEST);
+    }
+    //chain of thought
+    @PostMapping("/api/public/chat-cot")
+    @ResponseBody
+    public ResponseEntity<String> askAIChatByCoT(@RequestParam String question) {
+        if (Objects.nonNull(question)){
+            //step 1: get topic
+            String prompt1 = "You are a classifier. \n" + //
+                                "Given the user's question, reply with only one topic from this list:\n" + //
+                                "[\"immigration\", \"labour\", \"family\", \"normal_conversation\"].\n" + //
+                                "\n" + //
+                                "Do not explain your choice. \n" + //
+                                "If unsure, choose the closest topic.\n" + //
+                                "\n" + //
+                                "Question: "+ question + //
+                                "Topic:\n" + //
+                                "";
+            //step 2: get knowledge
+            String topic = chatService.sendRequest2Gemini(prompt1);
+            System.out.println(topic);
+            if (topic.equalsIgnoreCase("normal_conversation")){
+                //normal conversation
+                String output = chatService.sendRequest2Gemini(question);
+                return new ResponseEntity<>(output, HttpStatus.OK);
+            }
+            String knowledge = legalKnowledgeService.getKnowdgeByTopic(topic);
+            if (knowledge.equalsIgnoreCase("")){
+                //normal conversation
+                String output = chatService.sendRequest2Gemini(question);
+                return new ResponseEntity<>(output, HttpStatus.OK);
+            }
+            System.out.println(knowledge);
+            //step 3: ask AI again with knowledge
+            String prompt2 = "You are a legal assistant. \n" + //
+                                "Use only the information from the knowledge below to answer the user’s question.\n" + //
+                                "\n" + //
+                                "Knowledge:\n" + //
+                                "\"\"\"\n" + knowledge + //
+                                "\"\"\"\n" + //
+                                "\n" + //
+                                "Question:\n" + //
+                                question + //
+                                "\n" + //
+                                "If the knowledge does not contain enough information to answer, reply:\n" + //
+                                "\"I'm sorry, I couldn't find relevant information in the knowledge base.\"\n";
+            //
+            String output = chatService.sendRequest2Gemini(prompt2);
             return new ResponseEntity<>(output, HttpStatus.OK);
         }
         return new ResponseEntity<>("Empty query", HttpStatus.BAD_REQUEST);
