@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Authors List</title>
+    <style>
+        .single_line {border: 1px solid #000;}
+        a {text-decoration: underline; cursor: pointer;}
+      </style>
+    <script>
+        function changeSongs(authorId){
+            const iframe = document.getElementById('ifr');
+            iframe.src = `http://localhost:8081/songs/by_author?authorId=${authorId}`;
+        }
+
+    </script>
+</head>
+<body>
+<h2>Authors</h2>
+<form th:action="@{/authors/update}" method="post">
+    <table class="single_line">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Country</th>
+        </tr>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author._id}"></td>
+            <td><a th:text="${author.name}" th:onclick="'changeSongs('+ ${author._id} + ');'"></a></td>
+            <td th:text="${author.country}"></td>
+        </tr>
+    </table>
+</form><br/><br/>
+<iframe id="ifr" src="" height="300"></iframe>
+</body>
+</html>

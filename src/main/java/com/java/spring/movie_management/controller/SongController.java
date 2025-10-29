@@ -154,7 +154,7 @@ public class SongController {
         return "songs_filter";
     }
     //6.2
-    @GetMapping("/authors/list")
+    @GetMapping("/api/public/authors/list")
     public String showAuthors(Model model) {
         List<Author> authors = songService.getAllAuthors();
         model.addAttribute("authors", authors);
@@ -185,5 +185,12 @@ public class SongController {
         List<Song> latestSongs = songService.get4LatestSongs();
         model.addAttribute("latestSongs", latestSongs);
         return "one_music/albums-store";
+    }
+
+    @GetMapping("/songs/by_author")
+    public String getSongsByAuthor(@RequestParam Long authorId, Model model) {
+        List<Song> songs = songService.findByAuthorId(authorId);
+        model.addAttribute("songs", songs);
+        return "songs_with_author";
     }
 }
