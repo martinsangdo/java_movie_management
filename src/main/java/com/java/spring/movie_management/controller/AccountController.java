@@ -1,6 +1,9 @@
 package com.java.spring.movie_management.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -125,15 +128,55 @@ public class AccountController {
     }
 
     //4.1
+    @GetMapping("/login")
+    public String userLogin(Model model) {
+        return "sneat/html/auth-login-basic";
+    }
+    @PostMapping("/login")
+    public String login(@RequestParam String email,
+                    @RequestParam String password,
+                    HttpSession session,
+                    Model model) {
+        Map<String, Object> claims = new HashMap<>();
+        Optional<Account> account = accountService.getDetailByEmail(email);
+        if (account == null || !account.get().getPassword().equals(password)){
+            return "redirect:/login";   //cannot login here
+        }
+        //put sample test data
+        claims.put("account_id", account.get().getAccountId());
+        claims.put("email", email);
+        String token = JwtUtil.generateToken(claims);
+        //lưu trữ token trong session của máy chủ
+        session.setAttribute("JWT_TOKEN", token);
+        if (account.get().getRole() == null)
+            return "redirect:/login";
+        if (account.get().getRole().equals("ADMIN"))
+            return "redirect:/admin/dashboard";
+        return "redirect:/profile";
+    }
+
     @GetMapping("/admin/dashboard")
-    public String showAdminDashboard(Model model) {
+    public String showAdminDashboard(HttpSession session, Model model) {
+        String token = (String) session.getAttribute("JWT_TOKEN");
+        if (token == null)
+            return "redirect:/login";
+        String userId = JwtUtil.extractUserId(token);
+        AccountDTO account = accountService.getDetail(userId);
+        if (account == null || account.getRole().equals("USER"))
+            return "redirect:/login";   //not found
+        //
         return "sneat/html/index";
     }
     //user profile page
     @GetMapping("/profile")
     public String showProfile(HttpSession session, Model model) {
         String token = (String) session.getAttribute("JWT_TOKEN");
-        System.out.println(token);
+        if (token == null)
+            return "redirect:/login";
+        String userId = JwtUtil.extractUserId(token);
+        AccountDTO account = accountService.getDetail(userId);
+        if (account == null || account.getRole().equals("ADMIN"))
+            return "redirect:/login";   //not found
         //
         return "sneat/html/pages-account-settings-account";
     }

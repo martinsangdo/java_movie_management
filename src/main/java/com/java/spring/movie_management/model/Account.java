@@ -20,4 +20,5 @@ public class Account {
     private String password;
     private Integer credit_score;
     private String reference_code;
+    private String role;
 }

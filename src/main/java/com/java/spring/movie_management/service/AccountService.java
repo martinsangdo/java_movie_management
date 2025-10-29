@@ -34,6 +34,11 @@ public class AccountService {
         return mapper.toDto(savedAccount);
     }
 
+    public Optional<Account> getDetailByEmail(String email){
+        Optional<Account> savedAccount = accountRepository.findByEmail(email);
+        return savedAccount;
+    }
+
     public AccountDTO createAccount(Account dto) {
         // Check for existing email
         Optional<Account> existing = accountRepository.findByEmail(dto.getEmail());
