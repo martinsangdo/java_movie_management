@@ -64,10 +64,11 @@ public class MovieController {
         return new ResponseEntity<>("Booking for user ID: " + userId, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:8088") //this is called by front end
+    // @CrossOrigin(origins = "http://localhost:8088") //this is called by front end
+    @CrossOrigin(origins = {"http://localhost:8083", "http://localhost:8088"})
     @GetMapping("/api/public/top-movies")
-    public ResponseEntity<Page<Movie>> getTop10Movies(){
-        Page<Movie> allMovies = movieService.findAllPagination(PageRequest.of(0, 10));
+    public ResponseEntity<Page<Movie>> getTop10Movies(@RequestParam(defaultValue = "0") Integer pageIndex){
+        Page<Movie> allMovies = movieService.findAllPagination(PageRequest.of(pageIndex, 10));
         return new ResponseEntity<>(allMovies, HttpStatus.OK);
     }
 

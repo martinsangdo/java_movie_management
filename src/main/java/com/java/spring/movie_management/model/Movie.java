@@ -9,8 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-// @Document(collection = "mymoviedb")    //collection name
-@Document(collection = "movies")    //collection name
+@Document(collection = "mymoviedb")    //collection name
+// @Document(collection = "movies")    //collection name
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
@@ -24,8 +24,8 @@ public class Movie {
     private Double popularity;
     @Field("Vote_Count")
     private Integer voteCount;
-    @Field("Vote_Average")
-    private Double voteAverage;
+    // @Field("Vote_Average")
+    // private Double voteAverage;
     @Field("Genre")
     private String genre;
     @Field("Poster_Url")
@@ -40,8 +40,8 @@ public class Movie {
     //     this.voteAverage = vote;
     // }
 
-    public boolean isHighlyRated() {
-        return this.voteAverage >= 8.0;
-    }
+    // public boolean isHighlyRated() {
+    //     return this.voteAverage >= 8.0;
+    // }
 
 }

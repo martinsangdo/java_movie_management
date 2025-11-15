@@ -39,6 +39,7 @@ public class ChatService {
         try {
             JsonNode jsonData = buildGeminiRequestFormat(query);
             // Path: candidates[0].content.parts[0].text
+            System.out.println(jsonData);
             String text = jsonData.path("candidates")
                           .get(0)
                           .path("content")

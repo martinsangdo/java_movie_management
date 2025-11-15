@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class Employee {
     private Long id;
     private String name;
+    private String password;
 }
